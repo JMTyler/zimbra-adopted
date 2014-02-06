@@ -191,6 +191,7 @@ function(params) {
 	if(!params["noOAuth"]) {//used for makeSimpleHTTPGet
 		hdrs["Authorization"] = this._getGeneralAPIHeader(params);
 	}
+	hdrs["Content-Type"] = 'application/x-www-form-urlencoded';
 	var urlComponents = [];
 	for(var componentName in components) {
 		urlComponents.push(componentName + "=" + AjxStringUtil.urlComponentEncode(components[componentName]));

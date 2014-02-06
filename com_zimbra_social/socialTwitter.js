@@ -33,13 +33,13 @@ function com_zimbra_socialTwitter(zimlet, preferences) {
 		//ignore
 	}
 }
-com_zimbra_socialTwitter.FRIENDS_TIMELINE_URL = "https://api.twitter.com/1/statuses/friends_timeline.json";
-com_zimbra_socialTwitter.MENTIONS_URL = "https://api.twitter.com/1/statuses/mentions.json";
-com_zimbra_socialTwitter.DM_URL = "https://api.twitter.com/1/direct_messages.json";
-com_zimbra_socialTwitter.DM_URL_POST = "https://api.twitter.com/1/direct_messages/new.json";
-com_zimbra_socialTwitter.UPDATE_URL = "http://api.twitter.com/1/statuses/update.json";
-com_zimbra_socialTwitter.PROFILE_BASE_URL = "https://twitter.com/statuses/user_timeline/";
-com_zimbra_socialTwitter.DELETE_POST_BASE_URL = "https://api.twitter.com/1/statuses/destroy/";
+com_zimbra_socialTwitter.FRIENDS_TIMELINE_URL = "https://api.twitter.com/1.1/statuses/home_timeline.json";
+com_zimbra_socialTwitter.MENTIONS_URL = "https://api.twitter.com/1.1/statuses/mentions_timeline.json";
+com_zimbra_socialTwitter.DM_URL = "https://api.twitter.com/1.1/direct_messages.json";
+com_zimbra_socialTwitter.DM_URL_POST = "https://api.twitter.com/1.1/direct_messages/new.json";
+com_zimbra_socialTwitter.UPDATE_URL = "http://api.twitter.com/1.1/statuses/update.json";
+com_zimbra_socialTwitter.PROFILE_BASE_URL = "https://api.twitter.com/1.1/statuses/user_timeline.json";
+com_zimbra_socialTwitter.DELETE_POST_BASE_URL = "https://api.twitter.com/1.1/statuses/destroy/";
 com_zimbra_socialTwitter.SEARCH_BASE_URL = "http://search.twitter.com/search.json";
 com_zimbra_socialTwitter.FRIENDSHIP_BASE_URL = "https://twitter.com/friendships/show.json";
 
@@ -81,7 +81,7 @@ function social_sortTimeObjs(a, b) {
 com_zimbra_socialTwitter.prototype.getTwitterTrends =
 function() {
 	//23424977 is woeid for USA
-	var entireurl = ZmZimletBase.PROXY + AjxStringUtil.urlComponentEncode("https://api.twitter.com/1/trends/23424977.json");
+	var entireurl = ZmZimletBase.PROXY + AjxStringUtil.urlComponentEncode("https://api.twitter.com/1.1/trends/place.json?id=23424977");
 	AjxRpc.invoke(null, entireurl, null, new AjxCallback(this, this._trendsCallback), true);
 };
 
@@ -151,16 +151,18 @@ function(params) {
 		url = com_zimbra_socialTwitter.MENTIONS_URL;
 	} else if (type == "SENT_MSGS") {
 		useSimpleHttpGet = true;
-		url = [com_zimbra_socialTwitter.PROFILE_BASE_URL, params.account.screen_name, ".json"].join("");
+		url = [com_zimbra_socialTwitter.PROFILE_BASE_URL, "?screen_name=", params.account.screen_name].join("");
 	} else if (type == "PROFILE_MSGS") {
 		useSimpleHttpGet = true;
-		url = [com_zimbra_socialTwitter.PROFILE_BASE_URL, params.screen_name, ".json"].join("");
+		url = [com_zimbra_socialTwitter.PROFILE_BASE_URL, "?screen_name=", params.account.screen_name].join("");
 	}
+	/*
 	if(useSimpleHttpGet) {
 		this.zimlet.socialOAuth.makeSimpleHTTPGet({url: url, components: components, callback: callback});
 	} else {
 		this.zimlet.socialOAuth.makeHTTPGet({url: url, components: components, callback: callback});
 	}
+	*/
 };
 
 com_zimbra_socialTwitter.prototype._twitterItemsHandler =
